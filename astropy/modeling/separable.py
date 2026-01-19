@@ -242,7 +242,7 @@ def _cstack(left, right):
         cright = _coord_matrix(right, 'right', noutp)
     else:
         cright = np.zeros((noutp, right.shape[1]))
-        cright[-right.shape[0]:, -right.shape[1]:] =  1 if right.shape[0] == right.shape[1] else 0 
+        cright[-right.shape[0]:, -right.shape[1]:] = 1
     return np.hstack([cleft, cright])
 
 
