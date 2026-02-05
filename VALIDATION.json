@@ -1,0 +1,191 @@
+{
+  "instance_id": "astropy__astropy-12907",
+  "validation_timestamp": "2026-02-05 11:02:52",
+  "mutation_info": {
+    "mutation_id": 1,
+    "file": "astropy/modeling/separable.py",
+    "line_number": 246,
+    "original_code": "cright[-right.shape[0]:, -right.shape[1]:] = 1",
+    "mutated_code": "cright[-right.shape[0]:, -right.shape[1]:] = 0",
+    "mutation_type": "One to Zero",
+    "explanation": "Changed the assignment value from 1 to 0. This mutation affects the separability matrix construction by setting the designated region to zeros instead of ones, which would incorrectly indicate that outputs are not separable when they should be.\n\n---",
+    "judge_reasoning": "**\nCandidate 1 is semantically closest to the original bug, which was assigning a scalar constant instead of the actual separability matrix. By testing with `0` instead of `right`, it directly challenges whether tests verify the actual separability values rather than just structure.\n\n**Comparison Summary:**\n- Candidate 1: Directly tests the bug's root cause (scalar vs. matrix assignment); best for validating that tests check actual separability values\n- Candidate 2: Tests indexing logic, which is orthogonal to the actual bug about value assignment\n- Candidate 3: Tests dimension ordering, also orthogonal to the value assignment bug\n\n**Final Decision:** Mutation 1 is selected because it most directly tests whether the fix (using `right` instead of a scalar) is properly validated by the tests, making it the strongest indicator of test quality for this specific bug.",
+    "judge_decision": "** Mutation 1 is selected because it most directly tests whether the fix (using `right` instead of a scalar) is properly validated by the tests, making it the strongest indicator of test quality for this specific bug."
+  },
+  "validation_status": "invalid",
+  "original_test_classification": {
+    "fail_to_pass": [
+      "astropy/modeling/tests/test_separable.py::test_separable[compound_model6-result6]",
+      "astropy/modeling/tests/test_separable.py::test_separable[compound_model9-result9]"
+    ],
+    "pass_to_pass": [
+      "astropy/modeling/tests/test_separable.py::test_coord_matrix",
+      "astropy/modeling/tests/test_separable.py::test_cdot",
+      "astropy/modeling/tests/test_separable.py::test_cstack",
+      "astropy/modeling/tests/test_separable.py::test_arith_oper",
+      "astropy/modeling/tests/test_separable.py::test_separable[compound_model0-result0]",
+      "astropy/modeling/tests/test_separable.py::test_separable[compound_model1-result1]",
+      "astropy/modeling/tests/test_separable.py::test_separable[compound_model2-result2]",
+      "astropy/modeling/tests/test_separable.py::test_separable[compound_model3-result3]",
+      "astropy/modeling/tests/test_separable.py::test_separable[compound_model4-result4]",
+      "astropy/modeling/tests/test_separable.py::test_separable[compound_model5-result5]"
+    ]
+  },
+  "updated_test_classification": {
+    "fail_to_pass": [
+      "astropy/modeling/tests/test_separable.py::test_separable[compound_model0-result0]",
+      "astropy/modeling/tests/test_separable.py::test_separable[compound_model1-result1]",
+      "astropy/modeling/tests/test_separable.py::test_separable[compound_model2-result2]",
+      "astropy/modeling/tests/test_separable.py::test_separable[compound_model3-result3]",
+      "astropy/modeling/tests/test_separable.py::test_separable[compound_model5-result5]",
+      "astropy/modeling/tests/test_separable.py::test_separable[compound_model6-result6]",
+      "astropy/modeling/tests/test_separable.py::test_separable[compound_model9-result9]"
+    ],
+    "pass_to_pass": [
+      "astropy/modeling/tests/test_separable.py::test_arith_oper",
+      "astropy/modeling/tests/test_separable.py::test_cdot",
+      "astropy/modeling/tests/test_separable.py::test_coord_matrix",
+      "astropy/modeling/tests/test_separable.py::test_cstack",
+      "astropy/modeling/tests/test_separable.py::test_separable[compound_model4-result4]"
+    ],
+    "reclassified_count": 5,
+    "explanation": "Reclassified 5 P2P test(s) that failed with mutation to F2P"
+  },
+  "fail_to_pass_analysis": {
+    "original_count": 2,
+    "tested": 2,
+    "passed": 0,
+    "failed": 2,
+    "other": 0,
+    "expected_behavior": "Tests should FAIL with mutation (break original fix)",
+    "actual_behavior": "2 failed, 0 passed",
+    "is_correct": true
+  },
+  "pass_to_pass_analysis": {
+    "original_count": 10,
+    "tested": 10,
+    "sampled": 10,
+    "passed": 5,
+    "failed": 5,
+    "other": 0,
+    "expected_behavior": "Tests should PASS (no side effects)",
+    "actual_behavior": "5 passed, 5 failed",
+    "is_correct": false,
+    "reclassified_to_f2p": [
+      "astropy/modeling/tests/test_separable.py::test_separable[compound_model0-result0]",
+      "astropy/modeling/tests/test_separable.py::test_separable[compound_model1-result1]",
+      "astropy/modeling/tests/test_separable.py::test_separable[compound_model2-result2]",
+      "astropy/modeling/tests/test_separable.py::test_separable[compound_model3-result3]",
+      "astropy/modeling/tests/test_separable.py::test_separable[compound_model5-result5]"
+    ]
+  },
+  "detailed_results": {
+    "fail_to_pass": {
+      "astropy/modeling/tests/test_separable.py::test_separable[compound_model6-result6]": {
+        "status": "failed",
+        "exit_code": 1,
+        "elapsed_time": 5.56,
+        "error_message": "AssertionError: \nE   Not equal to tolerance rtol=1e-07, atol=0\nE   \nE   Mismatched elements: 2 / 4 (50%)\nE    x: array([False, False, False, False])\nE    y: array([False, False,  True,  True])",
+        "stdout": "/modeling/tests/test_separable.py::test_separable[compound_model6-result6] FAILED\n\n=================================== FAILURES ===================================\n___________________ test_separable[compound_model6-result6] ____________________\nastropy/modeling/tests/test_separable.py:151: in test_separable\n    assert_allclose(is_separable(compound_model), result[0])\n/opt/miniconda3/envs/testbed/lib/python3.9/contextlib.py:79: in inner\n    return func(*args, **kwds)\nE   AssertionError: \nE   Not equal to tolerance rtol=1e-07, atol=0\nE   \nE   Mismatched elements: 2 / 4 (50%)\nE    x: array([False, False, False, False])\nE    y: array([False, False,  True,  True])\n=========================== short test summary info ============================\nFAILED astropy/modeling/tests/test_separable.py::test_separable[compound_model6-result6]\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.47s ===============================\n",
+        "stderr": ""
+      },
+      "astropy/modeling/tests/test_separable.py::test_separable[compound_model9-result9]": {
+        "status": "failed",
+        "exit_code": 1,
+        "elapsed_time": 3.6,
+        "error_message": "AssertionError: \nE   Not equal to tolerance rtol=1e-07, atol=0\nE   \nE   Mismatched elements: 3 / 5 (60%)\nE    x: array([False, False, False, False, False])\nE    y: array([False, False,  True,  True,  True])",
+        "stdout": "s/test_separable.py::test_separable[compound_model9-result9] FAILED\n\n=================================== FAILURES ===================================\n___________________ test_separable[compound_model9-result9] ____________________\nastropy/modeling/tests/test_separable.py:151: in test_separable\n    assert_allclose(is_separable(compound_model), result[0])\n/opt/miniconda3/envs/testbed/lib/python3.9/contextlib.py:79: in inner\n    return func(*args, **kwds)\nE   AssertionError: \nE   Not equal to tolerance rtol=1e-07, atol=0\nE   \nE   Mismatched elements: 3 / 5 (60%)\nE    x: array([False, False, False, False, False])\nE    y: array([False, False,  True,  True,  True])\n=========================== short test summary info ============================\nFAILED astropy/modeling/tests/test_separable.py::test_separable[compound_model9-result9]\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.49s ===============================\n",
+        "stderr": ""
+      }
+    },
+    "pass_to_pass": {
+      "astropy/modeling/tests/test_separable.py::test_coord_matrix": {
+        "status": "passed",
+        "exit_code": 0,
+        "elapsed_time": 3.59,
+        "error_message": null,
+        "stdout": "<frozen importlib._bootstrap>:228: RuntimeWarning: numpy.ndarray size changed, may indicate binary incompatibility. Expected 80 from C header, got 96 from PyObject\nInternet access disabled\n============================= test session starts ==============================\ncollecting ... collected 1 item\n\nastropy/modeling/tests/test_separable.py::test_coord_matrix PASSED\n\n============================== 1 passed in 0.44s ===============================\n",
+        "stderr": ""
+      },
+      "astropy/modeling/tests/test_separable.py::test_cdot": {
+        "status": "passed",
+        "exit_code": 0,
+        "elapsed_time": 4.25,
+        "error_message": null,
+        "stdout": "<frozen importlib._bootstrap>:228: RuntimeWarning: numpy.ndarray size changed, may indicate binary incompatibility. Expected 80 from C header, got 96 from PyObject\nInternet access disabled\n============================= test session starts ==============================\ncollecting ... collected 1 item\n\nastropy/modeling/tests/test_separable.py::test_cdot PASSED\n\n============================== 1 passed in 0.62s ===============================\n",
+        "stderr": ""
+      },
+      "astropy/modeling/tests/test_separable.py::test_cstack": {
+        "status": "passed",
+        "exit_code": 0,
+        "elapsed_time": 5.83,
+        "error_message": null,
+        "stdout": "<frozen importlib._bootstrap>:228: RuntimeWarning: numpy.ndarray size changed, may indicate binary incompatibility. Expected 80 from C header, got 96 from PyObject\nInternet access disabled\n============================= test session starts ==============================\ncollecting ... collected 1 item\n\nastropy/modeling/tests/test_separable.py::test_cstack PASSED\n\n============================== 1 passed in 0.45s ===============================\n",
+        "stderr": ""
+      },
+      "astropy/modeling/tests/test_separable.py::test_arith_oper": {
+        "status": "passed",
+        "exit_code": 0,
+        "elapsed_time": 3.88,
+        "error_message": null,
+        "stdout": "<frozen importlib._bootstrap>:228: RuntimeWarning: numpy.ndarray size changed, may indicate binary incompatibility. Expected 80 from C header, got 96 from PyObject\nInternet access disabled\n============================= test session starts ==============================\ncollecting ... collected 1 item\n\nastropy/modeling/tests/test_separable.py::test_arith_oper PASSED\n\n============================== 1 passed in 0.42s ===============================\n",
+        "stderr": ""
+      },
+      "astropy/modeling/tests/test_separable.py::test_separable[compound_model0-result0]": {
+        "status": "failed",
+        "exit_code": 1,
+        "elapsed_time": 3.32,
+        "error_message": "AssertionError: \nE   Not equal to tolerance rtol=1e-07, atol=0\nE   \nE   Mismatched elements: 1 / 3 (33.3%)\nE    x: array([False, False, False])\nE    y: array([False, False,  True])",
+        "stdout": "tem\n\nastropy/modeling/tests/test_separable.py::test_separable[compound_model0-result0] FAILED\n\n=================================== FAILURES ===================================\n___________________ test_separable[compound_model0-result0] ____________________\nastropy/modeling/tests/test_separable.py:151: in test_separable\n    assert_allclose(is_separable(compound_model), result[0])\n/opt/miniconda3/envs/testbed/lib/python3.9/contextlib.py:79: in inner\n    return func(*args, **kwds)\nE   AssertionError: \nE   Not equal to tolerance rtol=1e-07, atol=0\nE   \nE   Mismatched elements: 1 / 3 (33.3%)\nE    x: array([False, False, False])\nE    y: array([False, False,  True])\n=========================== short test summary info ============================\nFAILED astropy/modeling/tests/test_separable.py::test_separable[compound_model0-result0]\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.42s ===============================\n",
+        "stderr": ""
+      },
+      "astropy/modeling/tests/test_separable.py::test_separable[compound_model1-result1]": {
+        "status": "failed",
+        "exit_code": 1,
+        "elapsed_time": 4.54,
+        "error_message": "AssertionError: \nE   Not equal to tolerance rtol=1e-07, atol=0\nE   \nE   Mismatched elements: 3 / 4 (75%)\nE    x: array([[ True, False],\nE          [False, False]])\nE    y: array([[ True,  True],\nE          [ True,  True]])",
+        "stdout": "st_separable[compound_model1-result1] FAILED\n\n=================================== FAILURES ===================================\n___________________ test_separable[compound_model1-result1] ____________________\nastropy/modeling/tests/test_separable.py:152: in test_separable\n    assert_allclose(separability_matrix(compound_model), result[1])\n/opt/miniconda3/envs/testbed/lib/python3.9/contextlib.py:79: in inner\n    return func(*args, **kwds)\nE   AssertionError: \nE   Not equal to tolerance rtol=1e-07, atol=0\nE   \nE   Mismatched elements: 3 / 4 (75%)\nE    x: array([[ True, False],\nE          [False, False]])\nE    y: array([[ True,  True],\nE          [ True,  True]])\n=========================== short test summary info ============================\nFAILED astropy/modeling/tests/test_separable.py::test_separable[compound_model1-result1]\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.53s ===============================\n",
+        "stderr": ""
+      },
+      "astropy/modeling/tests/test_separable.py::test_separable[compound_model2-result2]": {
+        "status": "failed",
+        "exit_code": 1,
+        "elapsed_time": 4.22,
+        "error_message": "AssertionError: \nE   Not equal to tolerance rtol=1e-07, atol=0\nE   \nE   Mismatched elements: 1 / 3 (33.3%)\nE    x: array([False, False, False])\nE    y: array([False, False,  True])",
+        "stdout": "tem\n\nastropy/modeling/tests/test_separable.py::test_separable[compound_model2-result2] FAILED\n\n=================================== FAILURES ===================================\n___________________ test_separable[compound_model2-result2] ____________________\nastropy/modeling/tests/test_separable.py:151: in test_separable\n    assert_allclose(is_separable(compound_model), result[0])\n/opt/miniconda3/envs/testbed/lib/python3.9/contextlib.py:79: in inner\n    return func(*args, **kwds)\nE   AssertionError: \nE   Not equal to tolerance rtol=1e-07, atol=0\nE   \nE   Mismatched elements: 1 / 3 (33.3%)\nE    x: array([False, False, False])\nE    y: array([False, False,  True])\n=========================== short test summary info ============================\nFAILED astropy/modeling/tests/test_separable.py::test_separable[compound_model2-result2]\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.40s ===============================\n",
+        "stderr": ""
+      },
+      "astropy/modeling/tests/test_separable.py::test_separable[compound_model3-result3]": {
+        "status": "failed",
+        "exit_code": 1,
+        "elapsed_time": 4.45,
+        "error_message": "AssertionError: \nE   Not equal to tolerance rtol=1e-07, atol=0\nE   \nE   Mismatched elements: 1 / 3 (33.3%)\nE    x: array([False, False, False])\nE    y: array([False, False,  True])",
+        "stdout": "tem\n\nastropy/modeling/tests/test_separable.py::test_separable[compound_model3-result3] FAILED\n\n=================================== FAILURES ===================================\n___________________ test_separable[compound_model3-result3] ____________________\nastropy/modeling/tests/test_separable.py:151: in test_separable\n    assert_allclose(is_separable(compound_model), result[0])\n/opt/miniconda3/envs/testbed/lib/python3.9/contextlib.py:79: in inner\n    return func(*args, **kwds)\nE   AssertionError: \nE   Not equal to tolerance rtol=1e-07, atol=0\nE   \nE   Mismatched elements: 1 / 3 (33.3%)\nE    x: array([False, False, False])\nE    y: array([False, False,  True])\n=========================== short test summary info ============================\nFAILED astropy/modeling/tests/test_separable.py::test_separable[compound_model3-result3]\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.49s ===============================\n",
+        "stderr": ""
+      },
+      "astropy/modeling/tests/test_separable.py::test_separable[compound_model4-result4]": {
+        "status": "passed",
+        "exit_code": 0,
+        "elapsed_time": 6.3,
+        "error_message": null,
+        "stdout": "<frozen importlib._bootstrap>:228: RuntimeWarning: numpy.ndarray size changed, may indicate binary incompatibility. Expected 80 from C header, got 96 from PyObject\nInternet access disabled\n============================= test session starts ==============================\ncollecting ... collected 1 item\n\nastropy/modeling/tests/test_separable.py::test_separable[compound_model4-result4] PASSED\n\n============================== 1 passed in 0.54s ===============================\n",
+        "stderr": ""
+      },
+      "astropy/modeling/tests/test_separable.py::test_separable[compound_model5-result5]": {
+        "status": "failed",
+        "exit_code": 1,
+        "elapsed_time": 5.54,
+        "error_message": "AssertionError: \nE   Not equal to tolerance rtol=1e-07, atol=0\nE   \nE   Mismatched elements: 1 / 2 (50%)\nE    x: array([False, False])\nE    y: array([False,  True])",
+        "stdout": ".. collected 1 item\n\nastropy/modeling/tests/test_separable.py::test_separable[compound_model5-result5] FAILED\n\n=================================== FAILURES ===================================\n___________________ test_separable[compound_model5-result5] ____________________\nastropy/modeling/tests/test_separable.py:151: in test_separable\n    assert_allclose(is_separable(compound_model), result[0])\n/opt/miniconda3/envs/testbed/lib/python3.9/contextlib.py:79: in inner\n    return func(*args, **kwds)\nE   AssertionError: \nE   Not equal to tolerance rtol=1e-07, atol=0\nE   \nE   Mismatched elements: 1 / 2 (50%)\nE    x: array([False, False])\nE    y: array([False,  True])\n=========================== short test summary info ============================\nFAILED astropy/modeling/tests/test_separable.py::test_separable[compound_model5-result5]\n!!!!!!!!!!!!!!!!!!!!!!!!!! stopping after 1 failures !!!!!!!!!!!!!!!!!!!!!!!!!!!\n============================== 1 failed in 0.63s ===============================\n",
+        "stderr": ""
+      }
+    }
+  },
+  "summary": {
+    "total_tests_run": 12,
+    "total_passed": 5,
+    "total_failed": 7,
+    "total_other": 0,
+    "validation_conclusion": "\u2717 INVALID MUTANT: 5 P2P test(s) failed (unexpected side effects)"
+  }
+}
